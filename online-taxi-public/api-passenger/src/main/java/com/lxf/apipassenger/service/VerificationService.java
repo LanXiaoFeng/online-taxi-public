@@ -1,5 +1,7 @@
 package com.lxf.apipassenger.service;
 
+import com.lxf.internalcommon.dto.ResponseResult;
+
 public interface VerificationService {
-    public String generatorCode(String passengerPhone);
+    public ResponseResult generatorCode(String passengerPhone);
 }
