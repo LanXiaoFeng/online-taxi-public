@@ -1,15 +1,12 @@
 package com.lxf.apipassenger.request;
 
+import lombok.Data;
 
+@Data
 public class VerificationCodeDTO {
 
-    public String getPassengerPhone() {
-        return passengerPhone;
-    }
-
-    public void setPassengerPhone(String passengerPhone) {
-        this.passengerPhone = passengerPhone;
-    }
 
     public String passengerPhone;
+
+    public String verificationCode;
 }
