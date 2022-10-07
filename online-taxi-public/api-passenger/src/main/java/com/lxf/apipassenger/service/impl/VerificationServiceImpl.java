@@ -4,7 +4,8 @@ import com.lxf.apipassenger.remote.ServicePassengerUserClient;
 import com.lxf.apipassenger.remote.ServiceVerificationcodeClient;
 import com.lxf.apipassenger.service.VerificationService;
 import com.lxf.internalcommon.constant.CommonStatusEnum;
-import com.lxf.internalcommon.constant.IdentityConstant;
+import com.lxf.internalcommon.constant.IdentityConstants;
+import com.lxf.internalcommon.constant.TokenConstants;
 import com.lxf.internalcommon.dto.ResponseResult;
 import com.lxf.internalcommon.request.VerificationCodeDTO;
 import com.lxf.internalcommon.response.NumberCodeResponse;
@@ -77,15 +78,19 @@ public class VerificationServiceImpl implements VerificationService {
         System.out.println("判断原来是否有用户，并进行对应的处理");
         servicePassengerUserClient.loginOrReg(verificationCodeDTO);
         // 颁发令牌 不应该用魔法值，用常量
-        String token = JwtUtils.generatorToken(verificationCodeDTO.getPassengerPhone(), IdentityConstant.PASSENGER_IDENTITY);
+        String accessToken = JwtUtils.generatorToken(verificationCodeDTO.getPassengerPhone(), IdentityConstants.PASSENGER_IDENTITY, TokenConstants.ACCESS_TOKEN_TYPE);
+        String refreshToken = JwtUtils.generatorToken(verificationCodeDTO.getPassengerPhone(), IdentityConstants.PASSENGER_IDENTITY, TokenConstants.REFRESH_TOKEN_TYPE);
         // 将token存到redis当中
-        String tokenKey = generatorTokenKey(verificationCodeDTO.getPassengerPhone(), IdentityConstant.PASSENGER_IDENTITY);
-        stringRedisTemplate.opsForValue().set(tokenKey,token,30,TimeUnit.DAYS);
+        String accessTokenKey = generatorTokenKey(verificationCodeDTO.getPassengerPhone(), IdentityConstants.PASSENGER_IDENTITY,TokenConstants.ACCESS_TOKEN_TYPE);
+        stringRedisTemplate.opsForValue().set(accessTokenKey,accessToken,30,TimeUnit.DAYS);
+        String refreshTokenKey = generatorTokenKey(verificationCodeDTO.getPassengerPhone(), IdentityConstants.PASSENGER_IDENTITY,TokenConstants.REFRESH_TOKEN_TYPE);
+        stringRedisTemplate.opsForValue().set(refreshTokenKey,refreshToken,31,TimeUnit.DAYS);
 
 
         // 响应
         TokenResponse tokenResponse = new TokenResponse();
-        tokenResponse.setToken(token);
+        tokenResponse.setAccessToken(accessToken);
+        tokenResponse.setRefreshToken(refreshToken);
         return ResponseResult.success(tokenResponse);
     }
 }

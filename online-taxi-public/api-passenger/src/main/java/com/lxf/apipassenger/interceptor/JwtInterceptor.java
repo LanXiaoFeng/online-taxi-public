@@ -3,6 +3,7 @@ package com.lxf.apipassenger.interceptor;
 import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.lxf.internalcommon.constant.TokenConstants;
 import com.lxf.internalcommon.dto.ResponseResult;
 import com.lxf.internalcommon.dto.TokenResult;
 import com.lxf.internalcommon.util.JwtUtils;
@@ -27,19 +28,7 @@ public class JwtInterceptor implements HandlerInterceptor {
         String reslutString = "";
 
         String token = request.getHeader("Authorization");
-        TokenResult tokenResult = null;
-        try {
-            tokenResult = JwtUtils.parseToken(token);
-        }catch (SignatureVerificationException e){
-            reslutString = "token sign error";
-            resutl = false;
-        }catch (TokenExpiredException e){
-            reslutString = "token time out";
-            resutl = false;
-        }catch (Exception e) {
-            reslutString = "token invalid";
-            resutl = false;
-        }
+        TokenResult tokenResult = JwtUtils.checkToken(token);
 
         if (tokenResult == null){
             reslutString = "token invalid";
@@ -48,17 +37,12 @@ public class JwtInterceptor implements HandlerInterceptor {
             // 拼接key
             String phone = tokenResult.getPhone();
             String identity = tokenResult.getIdentity();
-            String tokenKey = RedisPrefixUtils.generatorTokenKey(phone, identity);
+            String tokenKey = RedisPrefixUtils.generatorTokenKey(phone, identity, TokenConstants.ACCESS_TOKEN_TYPE);
             // 从redis中获取token
             String tokenRedis = stringRedisTemplate.opsForValue().get(tokenKey);
-            if (StringUtils.isEmpty(tokenRedis)){
-                reslutString = "token invalid";
+            if (StringUtils.isEmpty(tokenRedis) || !token.trim().equals(tokenRedis.trim())){
+                reslutString = "access token invalid";
                 resutl = false;
-            }else {
-                if (!token.trim().equals(tokenRedis.trim())){
-                    reslutString = "token invalid";
-                    resutl = false;
-                }
             }
         }
 

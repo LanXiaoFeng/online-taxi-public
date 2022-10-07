@@ -1,7 +1,7 @@
 package com.lxf.servicepassengeruser.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.lxf.servicepassengeruser.dto.PassengerUser;
+import com.lxf.internalcommon.dto.PassengerUser;
 import org.springframework.stereotype.Repository;
 
 @Repository

@@ -1,7 +1,7 @@
 package com.lxf.servicepassengeruser.service.impl;
 
+import com.lxf.internalcommon.dto.PassengerUser;
 import com.lxf.internalcommon.dto.ResponseResult;
-import com.lxf.servicepassengeruser.dto.PassengerUser;
 import com.lxf.servicepassengeruser.mapper.PassengerUserMapper;
 import com.lxf.servicepassengeruser.service.UserService;
 import org.springframework.stereotype.Service;

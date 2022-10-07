@@ -1,4 +1,4 @@
-package com.lxf.servicepassengeruser.dto;
+package com.lxf.internalcommon.dto;
 
 import lombok.Data;
 
