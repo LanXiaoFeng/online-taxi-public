@@ -3,9 +3,7 @@ package com.lxf.servicepassengeruser.controller;
 import com.lxf.internalcommon.dto.ResponseResult;
 import com.lxf.internalcommon.request.VerificationCodeDTO;
 import com.lxf.servicepassengeruser.service.UserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -21,9 +19,9 @@ public class UserController {
         return userService.loginOrRegister(passengerPhone);
     }
 
-    @PostMapping("/user/")
-    public ResponseResult getUser(@RequestBody VerificationCodeDTO verificationCodeDTO){
-        String passengerPhone = verificationCodeDTO.getPassengerPhone();
+    @GetMapping("/user/{phone}")
+    public ResponseResult getUser(@PathVariable("phone") String passengerPhone){
+        System.out.println("service-passenger-user:");
         return userService.getUserByPhone(passengerPhone);
     }
 }
