@@ -1,0 +1,15 @@
+server:
+  port: 8085
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  application:
+    name: service-map
+
+amap:
+  key: c4b8615a541f446a0a8b8f8166724247
+
+
