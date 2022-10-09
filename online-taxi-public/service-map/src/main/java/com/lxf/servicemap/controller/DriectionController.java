@@ -14,7 +14,7 @@ public class DriectionController {
     @Resource
     private DirectionService directionService;
 
-    @PostMapping("/driving")
+    @GetMapping("/driving")
     public ResponseResult driving(@RequestBody ForecastPriceDTO forecastPriceDTO){
         return directionService.driving(forecastPriceDTO);
     }
