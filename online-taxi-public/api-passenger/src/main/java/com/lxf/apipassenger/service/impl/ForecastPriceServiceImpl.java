@@ -1,15 +1,20 @@
 package com.lxf.apipassenger.service.impl;
 
+import com.lxf.apipassenger.remote.ForecastPriceClient;
 import com.lxf.apipassenger.service.ForecastPriceService;
 import com.lxf.internalcommon.dto.ResponseResult;
 import com.lxf.internalcommon.request.ForecastPriceDTO;
-import com.lxf.internalcommon.response.ForecastPriceResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 @Service
 @Slf4j
 public class ForecastPriceServiceImpl implements ForecastPriceService {
+
+    @Resource
+    private ForecastPriceClient forecastPriceClient;
 
     @Override
     public ResponseResult forecastPrice(ForecastPriceDTO forecastPriceDTO) {
@@ -23,9 +28,6 @@ public class ForecastPriceServiceImpl implements ForecastPriceService {
         log.info("目的地维度："+destLatitude);
 
         log.info("调用计价服务，计算价格");
-
-        ForecastPriceResponse forecastPriceResponse = new ForecastPriceResponse();
-        forecastPriceResponse.setPrice(12.23);
-        return ResponseResult.success(forecastPriceResponse);
+        return forecastPriceClient.forecast(forecastPriceDTO);
     }
 }
