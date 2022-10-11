@@ -17,6 +17,7 @@ public class UserController {
     @GetMapping("/users")
     public ResponseResult getUser(HttpServletRequest request){
         // 从http请求中获取accessToken
+        // 11
         String authorization = request.getHeader("Authorization");
         return userService.getUserByAccessToken(authorization);
     }
